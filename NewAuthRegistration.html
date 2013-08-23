@@ -1,0 +1,362 @@
+<html>
+<head>
+<title>ILLiad - New Authenticated User Registration</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
+
+<!-- This is imports the needed javascript file -->
+<script type="text/javascript" src="registrationscripts.js"></script>
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" href="css/ie6_or_less.css" />
+<![endif]-->
+</head>
+<body id="type-b">
+<div id="wrap">
+  <#INCLUDE filename="include_header.html">
+  <div id="content-wrap">
+  	<#INCLUDE filename="include_menu.html">
+    <div id="content" style="width: 600px;">
+		<form action="illiad.dll" method="post" name="NewAuthRegistration" class="f-wrap-request">
+			<input type="hidden" name="ILLiadForm" value="NewAuthRegistration">
+			<#FORMSTATE>
+			<input type="hidden" name="NotifyGroup" value="E-Mail">
+			<input type="hidden" name="NVTGC" value="ILL">
+			<input type="hidden" name="WebDeliveryGroup" value="Yes">
+			<input type="hidden" name="DeliveryGroup" value="Hold for Pickup">
+
+
+				<div class="req"><b>*</b> Indicates required field</div>
+				<fieldset>			
+					<h3>Your Information</h3>	
+					<label  style="border:none;">					
+						<span class="field">
+							<span class="req">*</span>
+							<span class="valid"><b>Campus</b></span>
+						</span>
+						
+<!-- This is an added dropdown.  It asks the user to select which campus they are at.  
+When changed, it sends the patronCampus value to the test function to fill in the rest of the form's values.
+Will not do anything unless the pStatus is already filled.
+-->						
+						<select name="patronCampus" onchange="javascript: campus=this[this.selectedIndex].value; test();" >
+							<option value="blank" selected></option>
+							<option value="Mem">Memphis, On-Campus</option>
+							<option value="Lam">Lambuth Campus</option>
+							<option value="e">Extended Programs/eCampus</option>
+							
+						</select>
+					</label>
+					<label style="border:none;">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="valid"><b>Status</b></span>
+						</span>
+
+<!-- This is an added dropdown.  It asks the user to select which patron status they are.  
+Option id's and values are added to allow functions to set the values.
+When changed, it sends the pStatus value to the test function to fill in the rest of the form's values.
+Will not do anything unless the patronCampus is already filled.
+-->		
+						
+					<select name="pStatus" onchange=" patronStatus=this[this.selectedIndex].value; test();">
+							<option value="blank" selected></option>
+							<option value="und">Undergraduate</option>
+							<option value="grad">Graduate</option>
+							<option value="staf">Staff</option>
+							<option value="fac">Faculty</option>
+					</select>
+					</label>	
+					<label for="LoanDeliveryGroup">
+						<span class="field">
+						<span class="req">*</span>
+							<span class="<#ERROR name='ERRORLoanDeliveryGroup'>"><b>Loan Delivery Method</b></span>
+						<div style="display: block; font-weight: bold; color: #ff0000;" id="deliveryNote"></div>
+						</span>
+						
+<!-- 
+Option id's and values are added to allow functions to set the values.
+Text value for "Mail to Address" changed to "Deliver" to avoid confusion.
+-->						
+						<select id="LoanDeliveryGroup" name="LoanDeliveryGroup" size="1" class="f-name" tabindex="4">
+							<option id="empty" selected><#PARAM name="LoanDeliveryGroup"></option>
+							<option id="hold" value="Hold for Pickup">Hold for Pickup</option>
+							<option id="mail" value="Mail to Address">Deliver to Address</option>
+                				</select><br />
+					</label>
+					<label for="Department">
+						<span class="field">
+						<span class="req">*</span>
+							<span class="<#ERROR name='ERRORDepartment'>"><b>Department</b></span>
+						</span>
+
+<!--
+When the department is set, the department value is sent as a paramter to the setDepartment function.  
+If the patron is a faculty member and wants office delivery, address is set as department office.
+-->						
+						
+						<select id="Department" name="Department" onchange="javascript: department=this[this.selectedIndex].value; setDepartment();" size="1" class="f-name" tabindex="4">
+							<option selected><#PARAM name='Department'></option>
+							<option value="Accountancy">Accountancy</option>
+							<option value="Anthropology">Anthropology</option>
+							<option value="Architecture">Architecture</option>
+							<option value="Art">Art</option>
+							<option value="Biology">Biology</option>
+							<option value="Biomedical Engineering">Biomedical Engineering</option>
+							<option value="Chemistry">Chemistry</option>
+							<option value="Civil Engineering">Civil Engineering</option>
+							<option value="City & Regional Planning">City & Regional Planning</option>
+							<option value="Communication">Communication</option>
+							<option value="Communication Science & Disorders">Communication Science & Disorders</option>
+							<option value="Computer Science">Computer Science</option>
+							<option value="Counseling, Educational Psychology & Research">Counseling, Educational Psychology & Research</option>
+							<option value="Criminology & Criminal Justice">Criminology & Criminal Justice</option>
+							<option value="Earth Sciences">Earth Sciences</option>	
+							<option value="Economics">Economics</option>
+							<option value="Education">Education</option>
+							<option value="Electrical & Computer Engineering">Electrical & Computer Engineering</option>
+							<option value="Engineering Technology">Engineering Technology</option>		
+							<option value="English">English</option>
+							<option value="Finance, Insurance & Real Estate">Finance, Insurance & Real Estate</option>
+							<option value="Foreign Languages & Literatures">Foreign Languages & Literatures</option>
+							<option value="Health Administration">Health Administration</option>
+							<option value="Health & Sport Sciences">Health & Sport Sciences</option>
+							<option value="History">History</option>
+							<option value="Hospitality & Resort Management">Hospitality & Resort Management</option>
+							<option value="Instruction & Curriculum Leadership">Instruction & Curriculum Leadership</option>
+							<option value="Interdisciplinary Studies">Interdisciplinary Studies</option>
+							<option value="Journalism">Journalism</option>
+							<option value="Leadership">Leadership</option>
+							<option value="Management">Management</option>
+							<option value="Management Information Systems">Management Information Systems</option>
+							<option value="Marketing & Supply Chain Management">Marketing & Supply Chain Management</option>
+							<option value="Mathematics">Mathematics</option>
+							<option value="Mechanical Engineering">Mechanical Engineering</option>
+							<option value="Music">Music</option>
+							<option value="Nursing">Nursing</option>
+							<option value="Philosophy">Philosophy</option>
+							<option value="Physics">Physics</option>
+							<option value="Political Science">Political Science</option>
+							<option value="Psychology">Psychology</option>
+							<option value="Public & Nonproft Administration">Public & Nonproft Administration</option>
+							<option value="Public Health">Public Health</option>
+							<option value="ROTC">ROTC</option>
+							<option value="Sociology">Sociology</option>
+							<option value="Social Work">Social Work</option>
+							<option value="Technology">Technology</option>
+							<option value="Theatre & Dance">Theatre & Dance</option>
+							<option value="University Administration">University Administration</option>
+							<option value="University College">University College</option>
+							<option value="University Libraries">University Libraries</option>
+							<option value="Other - Unlisted">Other - Unlisted</option>
+						</select><br />
+					</label>	
+					
+					<label for="FirstName">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name='ERRORFirstName'>"><b>First Name</b></span>
+						</span>
+						<input id="FirstName" name="FirstName" type="text" size="40" class="f-name" tabindex="2" value="<#PARAM name='FirstName'>"><br />	
+					</label>		
+						
+					<label for="LastName">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name='ERRORLastName'>"><b>Last Name</b></span>
+						</span>
+						<input id="LastName" name="LastName" type="text" size="40" class="f-name" tabindex="2" value="<#PARAM name='LastName'>"><br />						
+					</label>
+					
+					<!-- <label for="SSN">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name="ERRORSSN">"><b>ID Number</b></span>
+						</span>
+						<input id="SSN" name="SSN" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name="SSN">"><br />	</label>					
+					-->
+					
+				<!--	<label for="NotifyGroup">
+						<span class="field">
+							<span class="<#ERROR name="ERRORNotifyGroup">"><b>Preferred Notification Method</b></span>
+						</span>
+						<select id="NotifyGroup" name="NotifyGroup" size="1" class="f-name" tabindex="4">
+							<option selected><#PARAM name="NotifyGroup"></option>
+							<option>E-Mail</option>
+						</select><br />
+					</label> -->
+					
+					<label for="EMailAddress">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name='ERROREMailAddress'>"><b>U of M E-Mail Address 
+</b></span>
+						</span>
+						<input id="EMailAddress" name="EMailAddress" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='EMailAddress'>"><br />						
+					</label>
+					
+					<label for="Phone">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name='ERRORPhone'>"><b>Phone</b></span>
+						</span>
+						<input id="Phone" name="Phone" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='Phone'>"><br />						
+					</label>
+					
+				<!--	<label for="DeliveryGroup">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name="ERRORDeliveryGroup">"><b>Preferred Article Delivery Method</b></span>
+						</span>
+						<select id="DeliveryGroup" name="DeliveryGroup" size="1" class="f-name" tabindex="4">
+							<option selected><#PARAM name="DeliveryGroup"></option>
+							<option>Hold for Pickup</option>
+							<option>Mail to Address</option>
+                				</select><br />
+					</label> -->
+
+
+					
+				<!--	<label for="WebDeliveryGroup">
+						<span class="field">
+							<span class="<#ERROR name="ERRORWebDeliveryGroup">"><b>Preferred Electronic Delivery if Possible (PDF file via web)</b></span>
+						</span>
+						<select id="WebDeliveryGroup" name="WebDeliveryGroup" size="1" class="f-name" tabindex="4">
+							<option selected><#PARAM name="WebDeliveryGroup"></option>
+							<option>Yes</option>
+                				</select><br />
+					</label> -->
+				
+					<label for="Address">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name='ERRORAddress'>"><b>Address Line 1</b></span>
+						</span>
+						<input id="Address" name="Address" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='Address'>"><br />						
+					</label>
+					
+					<label for="Address2">
+						<span class="field">
+							<span class="<#ERROR name='ERRORAddress2'>"><b>Address Line 2</b></span>
+						</span>
+						<input id="Address2" name="Address2" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='Address2'>"><br />
+					</label>
+					
+					<label for="City">
+						<span class="field">
+							<span class="req">*</span>							
+							<span class="<#ERROR name='ERRORCity'>"><b>Address City</b></span>
+						</span>
+						<input id="City" name="City" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='City'>"><br />
+					</label>
+					
+					<label for="State">
+						<span class="field">
+							<span class="req">*</span>
+							<span class="<#ERROR name='ERRORState'>"><b>Address State</b></span>
+						</span>
+						<input id="State" name="State" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='State'>"><br />
+					</label>
+					
+					<label for="Zip">
+						<span class="field">
+							<span class="req">*</span>						
+							<span class="<#ERROR name='ERRORZip'>"><b>Address Zip</b></span>
+						</span>
+						<input id="Zip" name="Zip" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name='Zip'>"><br />
+					</label>
+					
+				<!--	<label for="SAddress">
+						<span class="field">
+							<span class="<#ERROR name="ERRORSAddress">"><b>Secondary Address Line 1</b></span>
+						</span>
+						<input id="SAddress" name="SAddress" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name="SAddress">"><br />						
+					</label>
+					
+					<label for="SAddress2">
+						<span class="field">
+							<span class="<#ERROR name="ERRORSAddress2">"><b>Secondary Address Line 2</b></span>
+						</span>
+						<input id="SAddress2" name="SAddress2" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name="SAddress2">"><br />
+					</label>
+					
+					<label for="SCity">
+						<span class="field">
+							<span class="<#ERROR name="ERRORSCity">"><b>Secondary Address City</b></span>
+						</span>
+						<input id="SCity" name="SCity" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name="SCity">"><br />
+					</label>
+					
+					<label for="SState">
+						<span class="field">
+							<span class="<#ERROR name="ERRORSState">"><b>Secondary Address State</b></span>
+						</span>
+						<input id="SState" name="SState" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name="SState">"><br />
+					</label>
+					
+					<label for="SZip">
+						<span class="field">
+							<span class="<#ERROR name="ERRORSZip">"><b>Secondary Address Zip</b></span>
+						</span>
+						<input id="SZip" name="SZip" type="text" size="40" class="f-name" tabindex="3" value="<#PARAM name="SZip">"><br />
+					</label> -->
+
+<!-- 
+This is the original StatusGroup dropdown.  The value is generated automatically using the patron's campus and status
+set above.  This dropdown could have been hidden but has been kept visible in case user has javascript disabled
+or needs to confirm.
+-->
+					
+					<label for="StatusGroup">
+						<span class="field">
+						<span class="req">*</span>
+							<span class="<#ERROR name='ERRORStatus'>"><b>Campus & Status</b></span>
+						</span>
+						<select id="StatusGroup" name="StatusGroup" size="1" class="f-name" tabindex="4">
+							<option id="statusGroupBlank" selected><#PARAM name='StatusGroup'></option>
+							<option id="Memund" value="Memund">Memphis Campus Undergraduate</option>
+							<option id="Memgrad" value="Memgrad">Memphis Campus Graduate Student</option>
+							<option id="Memstaf" value="Memstaf">Memphis Campus Staff</option>
+							<option id="Memfac" value="Memfac">Memphis Campus Faculty</option>
+							<option id="Lamund" value="Lamund">Lambuth Campus Undergraduate</option>
+							<option id="Lamgrad" value="Lamgrad">Lambuth Campus Graduate Student</option>
+							<option id="Lamstaf" value="Lamstaf">Lambuth Campus Staff</option>
+							<option id="Lamfac" value="Lamfac">Lambuth Campus Faculty</option>								
+							<option id="eund" value="eund">Extended Programs/eCampus Undergraduate</option>
+							<option id="egrad" value="egrad">Extended Programs/eCampus Graduate Student</option>
+							<option id="estaf" value="estaf">Extended Programs/eCampus Staff</option>
+							<option id="efac" value="efac">Extended Programs/eCampus Faculty</option>									
+						</select><br />
+					</label>
+					
+
+					
+				<!--	<label for="AuthorizedUsers">
+						<span class="field">
+							<span class="<#ERROR name="ERRORAuthorizedUsers">"><b>Authorized Users</b></span><br />
+							<span class="note">List the full names of anyone you wish to be allowed to pick up your ILL items.<br />An ID will be REQUIRED to pick items up.</span>
+						</span>
+						<textarea id="AuthorizedUsers" name="AuthorizedUsers" rows="2" cols="40" class="f-name" tabindex="15"><#PARAM name="AuthorizedUsers"></textarea><br />
+					</label> -->
+					
+				<!--	<label for="NVTGC">
+						<span class="field">
+							<span class="<#ERROR name="ERRORNVTGC">"><b>Delivery Location</b></span>
+						</span>
+						<select id="NVTGC" name="NVTGC" size="1" class="f-name" tabindex="4">
+							<option value="<#PARAM name="NVTGC">" selected><#PARAM name="NVTGCDescription"></option>
+							<option value="ILL">ILL Office</option>
+						</select><br />
+					</label> -->
+										               
+                    <div class="f-submit-wrap" align="right">
+						<input type="submit" name="SubmitButton" value="Submit Information" class="f-submit" tabindex="60" />
+						<input type="submit" name="SubmitButton" value="Cancel - Exit to Main Menu" class="f-submit" tabindex="62" />
+					</div>
+				</fieldset>
+		</form>		
+      	<#INCLUDE filename="include_footer.html">
+    </div>    
+  </div>
+</div>
+</body>
+</html>
